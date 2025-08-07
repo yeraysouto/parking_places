@@ -1,0 +1,124 @@
+{
+  "title": "Página de detalle de reserva",
+  "language": "es",
+  "description": "Diseño de una página que muestra la información de la reserva y ofrece métodos de pago, acompañada de una sección con parkings cercanos. El foco está en las proporciones de las imágenes y en cómo se acompaña cada una con su descripción.",
+  "layout": {
+    "header": {
+      "type": "navbar",
+      "background_color": "#FFFFFF",
+      "elements": [
+        { "type": "logo", "text": "ParkingNow" },
+        { "type": "nav_links", "labels": ["Reservar Días", "Marca y modelo", "Pago"] },
+        { "type": "button", "label": "Inicio" }
+      ]
+    },
+    "product_section": {
+      "type": "two_column",
+      "left": {
+        "element": "image",
+        "aspect_ratio": "4:5",
+        "description": "Imagen principal de la plaza o vehículo a reservar. La proporción relativamente alta (vertical) se utiliza para dar protagonismo al visual.",
+        "size": "grande",
+        "padding": 16
+      },
+      "right": {
+        "elements": [
+          {
+            "type": "heading",
+            "text": "Su reserva son:",
+            "style": { "font_size": 24, "font_weight": "bold" }
+          },
+          {
+            "type": "paragraph",
+            "text": "Explicación breve de cómo se calcula el precio, por ejemplo contando los días y multiplicando por una tarifa fija."
+          },
+          {
+            "type": "paragraph",
+            "text": "Mensaje sobre el ahorro estimado según los días de estancia."
+          },
+          {
+            "type": "payment_methods",
+            "description": "Lista de opciones de pago disponibles, cada una en un botón de igual ancho para mantener uniformidad.",
+            "buttons": [
+              { "label": "Tarjeta", "style": { "background_color": "#000000", "text_color": "#FFFFFF" } },
+              { "label": "Bizum", "style": { "background_color": "#000000", "text_color": "#FFFFFF" } },
+              { "label": "Efectivo", "style": { "background_color": "#000000", "text_color": "#FFFFFF" } }
+            ]
+          },
+          {
+            "type": "note",
+            "text": "Instrucción final indicando que el usuario debe dirigirse a la dirección indicada."
+          }
+        ],
+        "spacing": 16
+      },
+      "gap": 24
+    },
+    "nearby_parkings_section": {
+      "title": {
+        "text": "Parkings cercanos",
+        "font_size": 22,
+        "font_weight": "bold"
+      },
+      "description": "Sección que muestra alternativas de parkings cercanos como tarjetas con imagen y texto. Cada tarjeta combina una fotografía con proporciones uniformes y un pequeño bloque de texto que explica la funcionalidad.",
+      "grid": {
+        "columns": 3,
+        "cards": [
+          {
+            "image": { "aspect_ratio": "4:3", "description": "Foto ilustrativa del parking cercano." },
+            "title": "Añadir parkings cercanos en base a la ubicación",
+            "subtitle": "Comparador de precios",
+            "text": "Permite añadir los precios por días de los diferentes parkings cercanos."
+          },
+          {
+            "image": { "aspect_ratio": "4:3", "description": "Foto ilustrativa del parking cercano." },
+            "title": "Añadir parkings cercanos en base a la ubicación",
+            "subtitle": "Comparador de precios",
+            "text": "Permite añadir los precios por días de los diferentes parkings cercanos."
+          },
+          {
+            "image": { "aspect_ratio": "4:3", "description": "Foto ilustrativa del parking cercano." },
+            "title": "Añadir parkings cercanos en base a la ubicación",
+            "subtitle": "Comparador de precios",
+            "text": "Permite añadir los precios por días de los diferentes parkings cercanos."
+          },
+          {
+            "image": { "aspect_ratio": "4:3", "description": "Foto ilustrativa del parking cercano." },
+            "title": "Añadir parkings cercanos en base a la ubicación",
+            "subtitle": "Comparador de precios",
+            "text": "Permite añadir los precios por días de los diferentes parkings cercanos."
+          },
+          {
+            "image": { "aspect_ratio": "4:3", "description": "Foto ilustrativa del parking cercano." },
+            "title": "Añadir parkings cercanos en base a la ubicación",
+            "subtitle": "Comparador de precios",
+            "text": "Permite añadir los precios por días de los diferentes parkings cercanos."
+          },
+          {
+            "image": { "aspect_ratio": "4:3", "description": "Foto ilustrativa del parking cercano." },
+            "title": "Añadir parkings cercanos en base a la ubicación",
+            "subtitle": "Comparador de precios",
+            "text": "Permite añadir los precios por días de los diferentes parkings cercanos."
+          }
+        ],
+        "gap": 16
+      }
+    },
+    "footer": {
+      "columns": [
+        { "title": "Nombre del sitio", "items": ["Redes sociales"] },
+        { "title": "Tema", "items": ["Página", "Página", "Página"] },
+        { "title": "Tema", "items": ["Página", "Página", "Página"] },
+        { "title": "Tema", "items": ["Página", "Página", "Página"] }
+      ],
+      "note": "Se incluyen iconos de redes sociales en el pie para vincular a perfiles."
+    }
+  },
+  "style": {
+    "font_family": "Inter, sans-serif",
+    "primary_color": "#000000",
+    "secondary_color": "#6B7280",
+    "accent_color": "#A78BFA",
+    "background_color": "#FFFFFF"
+  }
+}

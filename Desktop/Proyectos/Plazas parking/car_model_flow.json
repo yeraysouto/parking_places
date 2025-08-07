@@ -1,0 +1,71 @@
+{
+  "title": "Verificación de modelo de coche",
+  "language": "es",
+  "description": "Flujo de la página para comprobar si el vehículo del usuario cabe en la plaza de parking. El proceso solicita la marca y el modelo del coche, consulta las dimensiones del vehículo y, en función del resultado, permite o no continuar al pago.",
+  "flow": [
+    {
+      "step": 1,
+      "user_action": "Seleccionar o introducir la marca y el modelo del coche en un campo desplegable o autocompletado.",
+      "system_action": "Captura el valor introducido y lo prepara para la consulta."
+    },
+    {
+      "step": 2,
+      "user_action": "Confirmar la selección del vehículo (por ejemplo, pulsando un botón de comprobar).",
+      "system_action": "Realiza una búsqueda en Google o en una base de datos de vehículos para obtener las dimensiones (longitud, anchura y altura) del modelo seleccionado."
+    },
+    {
+      "step": 3,
+      "user_action": "Espera el resultado de la verificación.",
+      "system_action": "Compara las dimensiones del vehículo recuperadas con las dimensiones de la plaza de parking disponible."
+    },
+    {
+      "step": 4,
+      "condition": "Si las dimensiones del coche son menores o iguales que las dimensiones de la plaza",
+      "system_action": "Muestra un mensaje de que el coche cabe y habilita la opción de continuar a la página de pago."
+    },
+    {
+      "step": 5,
+      "condition": "Si las dimensiones del coche superan las dimensiones de la plaza",
+      "system_action": "Informa al usuario de que su coche no cabe y deshabilita el avance al pago; sugiere elegir otra plaza o contactar con soporte."
+    }
+  ],
+  "layout": {
+    "header": {
+      "type": "navbar",
+      "elements": [
+        { "type": "logo", "text": "ParkingNow" },
+        { "type": "nav_links", "labels": ["Página", "Página", "Página"] },
+        { "type": "button", "label": "Botón" }
+      ]
+    },
+    "main": {
+      "title": "Escribe tu modelo de coche",
+      "subtitle": "Solicitamos la marca y el modelo para comprobar si cabe en el parking.",
+      "input": {
+        "type": "dropdown_autocomplete",
+        "placeholder": "Marca y modelo",
+        "icon": "arrow_down",
+        "behavior": "Muestra sugerencias a medida que se escribe."
+      },
+      "instructions": [
+        "El sistema verificará automáticamente si el vehículo cabe en la plaza.",
+        "Si cabe, se mostrará un enlace o botón para ir a la siguiente pestaña de pago."
+      ]
+    },
+    "footer": {
+      "columns": [
+        { "title": "ParkingNow", "items": [] },
+        { "title": "Contacto", "items": ["+34 684 10 09 30", "Página", "Página"] },
+        { "title": "Tema", "items": ["Página", "Página"] },
+        { "title": "Políticas", "items": ["Privacidad", "Cancelaciones y Devoluciones", "Reservas"] }
+      ]
+    }
+  },
+  "style": {
+    "font_family": "Inter, sans-serif",
+    "primary_color": "#000000",
+    "secondary_color": "#6B7280",
+    "accent_color": "#A78BFA",
+    "background_color": "#FFFFFF"
+  }
+}

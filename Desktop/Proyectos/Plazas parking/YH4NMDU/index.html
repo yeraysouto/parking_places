@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkingNow - Reserva tu plaza de parking</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography,forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <div id="app-container" class="min-h-screen flex flex-col">
+        
+        <header class="bg-white shadow-sm sticky top-0 z-40">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="parking-circle" class="text-brand-primary h-8 w-8"></i>
+                    <h1 class="text-2xl font-bold text-brand-primary">ParkingNow</h1>
+                </div>
+                <div id="header-title" class="text-lg font-semibold text-gray-600">
+                    Reserva tu plaza
+                </div>
+            </nav>
+        </header>
+
+        <main class="flex-grow container mx-auto px-6 py-8 md:py-16">
+            
+            <div id="booking-wizard" class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-2xl shadow-lg">
+                <div id="progress-bar" class="flex justify-between items-center mb-8">
+                     <div class="step-indicator active" data-step="1">
+                        <div class="step-circle">1</div>
+                        <span class="step-label">Fechas</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-indicator" data-step="2">
+                        <div class="step-circle">2</div>
+                        <span class="step-label">Vehículo</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-indicator" data-step="3">
+                        <div class="step-circle">3</div>
+                        <span class="step-label">Pago</span>
+                    </div>
+                </div>
+
+                <!-- Step 1: Date Selection -->
+                <section id="step-1-dates" class="booking-step">
+                    <h2 class="text-2xl md:text-3xl font-bold text-center mb-2 text-brand-dark">Selecciona tus fechas</h2>
+                    <p class="text-center text-gray-500 mb-8">Los días en rojo no están disponibles.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                        <div>
+                            <label for="start-date" class="font-semibold text-gray-700 block mb-2">Fecha de Entrada</label>
+                            <input type="date" id="start-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition">
+                        </div>
+                        <div>
+                            <label for="end-date" class="font-semibold text-gray-700 block mb-2">Fecha de Salida</label>
+                            <input type="date" id="end-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition">
+                        </div>
+                    </div>
+                    <div id="date-error" class="text-red-600 mt-4 text-center h-5"></div>
+                    <div class="text-center mt-8">
+                        <button id="to-step-2-btn" class="btn-primary w-full md:w-auto px-12 py-3 text-lg font-bold rounded-full transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Verificar Coche</button>
+                    </div>
+                </section>
+
+                <!-- Step 2: Vehicle Verification -->
+                <section id="step-2-vehicle" class="booking-step hidden">
+                    <h2 class="text-2xl md:text-3xl font-bold text-center mb-2 text-brand-dark">Verifica tu vehículo</h2>
+                    <p class="text-center text-gray-500 mb-8">Asegúrate de que tu coche es compatible con la plaza.</p>
+                    <div class="max-w-md mx-auto">
+                        <label for="car-model" class="font-semibold text-gray-700 block mb-2">Marca y Modelo del Vehículo</label>
+                        <input type="text" id="car-model" list="car-models-list" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition" placeholder="Ej: Seat León">
+                        <datalist id="car-models-list"></datalist>
+                        <div id="vehicle-feedback" class="mt-4 text-center h-10"></div>
+                    </div>
+                    <div class="flex justify-center gap-4 mt-8">
+                        <button id="back-to-step-1-btn" class="btn-secondary px-8 py-3 font-bold rounded-full transition">Atrás</button>
+                        <button id="to-step-3-btn" class="btn-primary w-full md:w-auto px-12 py-3 text-lg font-bold rounded-full transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Proceder al Pago</button>
+                    </div>
+                </section>
+
+                <!-- Step 3: Payment -->
+                <section id="step-3-payment" class="booking-step hidden">
+                    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-brand-dark">Resumen y Pago</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        <div class="lg:col-span-3">
+                            <div class="bg-gray-100 p-6 rounded-xl">
+                                <h3 class="font-bold text-xl mb-4 text-brand-dark">Resumen de tu Reserva</h3>
+                                <div class="space-y-3">
+                                    <div id="summary-parking-location" class="flex items-center space-x-3">
+                                        <i data-lucide="map-pin" class="text-brand-primary"></i>
+                                        <span>Parking Central - Barcelona</span>
+                                    </div>
+                                    <div id="summary-dates" class="flex items-center space-x-3">
+                                        <i data-lucide="calendar-days" class="text-brand-primary"></i>
+                                        <span></span>
+                                    </div>
+                                    <div id="summary-price" class="flex items-center space-x-3 text-lg font-semibold">
+                                        <i data-lucide="tag" class="text-brand-primary"></i>
+                                        <span class="flex items-baseline"></span>
+                                    </div>
+                                    <div class="pt-2">
+                                        <label for="license-plate" class="font-semibold text-gray-700 block mb-2">Matrícula del Vehículo</label>
+                                        <input type="text" id="license-plate" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition" placeholder="Ej: 1234 ABC">
+                                        <div id="plate-error" class="text-red-600 mt-2 text-sm h-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <h3 class="font-bold text-xl mb-4 text-brand-dark">Selecciona Método de Pago</h3>
+                                <div id="payment-options" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                     <button class="payment-option" data-method="Tarjeta">
+                                        <i data-lucide="credit-card" class="h-8 w-8 mb-2"></i>
+                                        <span>Tarjeta</span>
+                                    </button>
+                                    <button class="payment-option" data-method="Bizum">
+                                        <i data-lucide="smartphone" class="h-8 w-8 mb-2"></i>
+                                        <span>Bizum</span>
+                                    </button>
+                                    <button class="payment-option" data-method="Efectivo">
+                                        <i data-lucide="coins" class="h-8 w-8 mb-2"></i>
+                                        <span>Efectivo</span>
+                                    </button>
+                                </div>
+                                <div id="payment-details" class="mt-6 min-h-[240px] md:min-h-[220px]">
+                                    <form id="credit-card-form" class="hidden payment-detail-form space-y-4">
+                                        <h4 class="font-semibold text-lg text-brand-dark">Datos de la Tarjeta</h4>
+                                        <div>
+                                            <label for="card-name" class="block text-sm font-medium text-gray-700">Nombre en la tarjeta</label>
+                                            <input type="text" id="card-name" autocomplete="cc-name" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition" placeholder="John M. Doe" required>
+                                        </div>
+                                        <div>
+                                            <label for="card-number" class="block text-sm font-medium text-gray-700">Número de la tarjeta</label>
+                                            <input type="text" id="card-number" autocomplete="cc-number" inputmode="numeric" pattern="[0-9\\s]{13,19}" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition" placeholder="0000 0000 0000 0000" required>
+                                        </div>
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <div class="col-span-2">
+                                                <label for="card-expiry" class="block text-sm font-medium text-gray-700">Expiración (MM/YY)</label>
+                                                <input type="text" id="card-expiry" autocomplete="cc-exp" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition" placeholder="MM/YY" required>
+                                            </div>
+                                            <div>
+                                                <label for="card-cvc" class="block text-sm font-medium text-gray-700">CVC</label>
+                                                <input type="text" id="card-cvc" autocomplete="cc-csc" inputmode="numeric" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition" placeholder="123" required>
+                                            </div>
+                                        </div>
+                                        <div id="card-error" class="text-red-600 text-sm h-4"></div>
+                                    </form>
+                            
+                                    <div id="bizum-instructions" class="hidden payment-detail-form bg-gray-100 p-6 rounded-lg">
+                                        <h4 class="font-semibold text-lg text-brand-dark mb-2">Pagar con Bizum</h4>
+                                        <p class="text-gray-600">Recibirás una solicitud de pago en tu móvil. Por favor, acéptala para confirmar la reserva.</p>
+                                        <p class="text-gray-600 mt-2 text-sm">Este proceso es seguro y gestionado por tu banco.</p>
+                                    </div>
+                            
+                                    <div id="cash-instructions" class="hidden payment-detail-form bg-gray-100 p-6 rounded-lg">
+                                        <h4 class="font-semibold text-lg text-brand-dark mb-2">Pago en Efectivo</h4>
+                                        <p class="text-gray-600">Podrás abonar el importe total directamente en la garita del parking el día de tu llegada.</p>
+                                        <p class="text-gray-600 mt-2 text-sm">Tu plaza queda reservada. No se requiere pago por adelantado.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-blue-50 p-6 rounded-xl border border-blue-200">
+                             <h3 class="font-bold text-lg mb-1 text-brand-dark">Ahorra en tu reserva</h3>
+                             <p class="text-sm text-gray-600 mb-4">¡Estás ahorrando un <span id="savings-percentage" class="font-bold">20%</span> comparado con la tarifa estándar!</p>
+                             <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center text-xl font-bold">
+                                    <span class="text-gray-700">TOTAL</span>
+                                    <span id="total-price-display" class="text-brand-primary"></span>
+                                </div>
+                             </div>
+                             <div class="flex justify-center gap-4 mt-6">
+                                <button id="back-to-step-2-btn" class="btn-secondary px-8 py-3 font-bold rounded-full transition">Atrás</button>
+                                <button id="review-booking-btn" class="btn-primary flex-grow py-3 text-lg font-bold rounded-full transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Revisar y Continuar</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Confirmation Message -->
+                <section id="confirmation-message" class="booking-step hidden text-center py-10">
+                    <div class="max-w-md mx-auto">
+                        <i data-lucide="check-circle-2" class="text-green-500 h-20 w-20 mx-auto mb-4"></i>
+                        <h2 class="text-3xl font-bold mb-2 text-brand-dark">¡Reserva Confirmada!</h2>
+                        <p id="confirmation-text" class="text-gray-600 mb-6"></p>
+                        <button id="new-booking-btn" class="btn-primary px-12 py-3 text-lg font-bold rounded-full transition transform hover:scale-105">Hacer otra reserva</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- How it works -->
+            <section id="how-it-works" class="mt-20 md:mt-32 text-center">
+                <h2 class="text-3xl font-bold mb-4 text-brand-dark">¿Cómo funciona?</h2>
+                <p class="max-w-2xl mx-auto text-gray-600 mb-12">Reserva tu plaza de parking en solo tres sencillos pasos.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
+                        <div class="bg-brand-accent text-brand-primary rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                            <i data-lucide="calendar" class="h-8 w-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">1. Elige las fechas</h3>
+                        <p class="text-gray-500">Selecciona cuándo quieres llegar y marchar. Verás la disponibilidad en tiempo real.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
+                        <div class="bg-brand-accent text-brand-primary rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                            <i data-lucide="car" class="h-8 w-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">2. Verifica tu coche</h3>
+                        <p class="text-gray-500">Indícanos tu modelo de vehículo para asegurar que cabe perfectamente en la plaza.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
+                        <div class="bg-brand-accent text-brand-primary rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-6">
+                            <i data-lucide="credit-card" class="h-8 w-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">3. Paga y listo</h3>
+                        <p class="text-gray-500">Confirma tu reserva con tu método de pago preferido. ¡Así de fácil!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-brand-dark text-white mt-20">
+            <div class="container mx-auto px-6 py-10">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="col-span-2 md:col-span-1">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <i data-lucide="parking-circle" class="h-8 w-8"></i>
+                            <h2 class="text-2xl font-bold">ParkingNow</h2>
+                        </div>
+                        <p class="text-gray-400">© 2025 ParkingNow. Todos los derechos reservados.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold tracking-wider uppercase mb-4">Contacto</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li><a href="#" class="hover:text-white">Soporte</a></li>
+                            <li><a href="#" class="hover:text-white">Preguntas Frecuentes</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold tracking-wider uppercase mb-4">Legal</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li><a href="#" class="hover:text-white">Términos de Servicio</a></li>
+                            <li><a href="#" class="hover:text-white">Política de Privacidad</a></li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h3 class="font-bold tracking-wider uppercase mb-4">Síguenos</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="facebook"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Summary Modal -->
+    <div id="summary-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4 opacity-0">
+        <div id="summary-modal-content" class="bg-white rounded-2xl shadow-xl p-6 md:p-8 max-w-lg w-full transform opacity-0 scale-95">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 text-brand-dark">Confirma tu Reserva</h2>
+            <div class="space-y-4 text-gray-700">
+                <div class="p-4 bg-gray-50 rounded-lg border">
+                    <h3 class="font-semibold text-lg mb-2 text-brand-dark flex items-center"><i data-lucide="calendar-check" class="mr-2 h-5 w-5"></i>Fechas</h3>
+                    <p id="summary-modal-dates" class="ml-7"></p>
+                </div>
+                 <div class="p-4 bg-gray-50 rounded-lg border">
+                    <h3 class="font-semibold text-lg mb-2 text-brand-dark flex items-center"><i data-lucide="car" class="mr-2 h-5 w-5"></i>Vehículo</h3>
+                    <p id="summary-modal-vehicle" class="ml-7"></p>
+                    <p id="summary-modal-plate" class="ml-7 font-mono tracking-widest text-base"></p>
+                </div>
+                 <div class="p-4 bg-gray-50 rounded-lg border">
+                    <h3 class="font-semibold text-lg mb-2 text-brand-dark flex items-center"><i data-lucide="credit-card" class="mr-2 h-5 w-5"></i>Pago</h3>
+                    <p id="summary-modal-payment" class="ml-7"></p>
+                </div>
+                 <div class="p-4 bg-gray-50 rounded-lg border">
+                    <h3 class="font-semibold text-lg mb-2 text-brand-dark flex items-center"><i data-lucide="receipt" class="mr-2 h-5 w-5"></i>Desglose</h3>
+                    <div id="summary-modal-price-breakdown" class="ml-7 space-y-1"></div>
+                </div>
+            </div>
+            <div class="flex justify-center gap-4 mt-8">
+                <button id="modal-back-btn" class="btn-secondary px-8 py-3 font-bold rounded-full transition">Atrás</button>
+                <button id="modal-confirm-btn" class="btn-primary px-12 py-3 text-lg font-bold rounded-full transition transform hover:scale-105">Confirmar y Pagar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="hidden fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-[60] flex-col opacity-0">
+        <div class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-brand-primary"></div>
+        <p class="mt-4 text-lg font-semibold text-brand-dark">Procesando tu reserva...</p>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

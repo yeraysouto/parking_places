@@ -1,0 +1,216 @@
+{
+  "title": "Parking in Barcelona Landing Page",
+  "language": "es",
+  "description": "Página de reserva de estacionamiento en Barcelona con navegación superior, hero con título y selector de fechas, sección de testimonios y sección de llamada a la acción con botones, y pie de página con información de contacto y políticas.",
+  "layout": {
+    "header": {
+      "type": "navbar",
+      "background_color": "#FFFFFF",
+      "elements": [
+        {
+          "type": "logo",
+          "text": "ParkingNow",
+          "font_size": 20,
+          "font_weight": "bold",
+          "color": "#000000",
+          "alignment": "left"
+        },
+        {
+          "type": "nav_links",
+          "labels": ["Página", "Página", "Página"],
+          "spacing": 40,
+          "font_size": 16,
+          "color": "#000000"
+        },
+        {
+          "type": "button",
+          "label": "Botón",
+          "style": {
+            "background_color": "#000000",
+            "text_color": "#FFFFFF",
+            "padding_horizontal": 20,
+            "padding_vertical": 8,
+            "border_radius": 4
+          }
+        }
+      ]
+    },
+    "hero": {
+      "background_color": "#FFFFFF",
+      "alignment": "center",
+      "elements": [
+        {
+          "type": "title",
+          "text": "Parking in Barcelona",
+          "font_size": 36,
+          "font_weight": "bold",
+          "color": "#000000"
+        },
+        {
+          "type": "subtitle",
+          "text": "Marca de que día a qué día quieres reservar el parking.",
+          "font_size": 16,
+          "color": "#6B7280"
+        },
+        {
+          "type": "date_range_picker",
+          "style": {
+            "border_color": "#A78BFA",
+            "border_width": 2,
+            "border_radius": 8,
+            "padding": 24,
+            "layout": "horizontal",
+            "gap": 16
+          },
+          "elements": [
+            {
+              "type": "date_input",
+              "label": "Date",
+              "placeholder": "MM/DD/YYYY",
+              "icon": "calendar",
+              "border_color": "#A78BFA",
+              "border_radius": 4
+            },
+            {
+              "type": "date_input",
+              "label": "Date",
+              "placeholder": "08/DD/YYYY",
+              "icon": "calendar",
+              "border_color": "#A78BFA",
+              "border_radius": 4
+            },
+            {
+              "type": "date_input",
+              "label": "Date",
+              "value": "08/17/2023",
+              "icon": "calendar",
+              "border_color": "#A78BFA",
+              "border_radius": 4
+            },
+            {
+              "type": "calendar_widget",
+              "month": "Agosto 2023",
+              "selected_date": "17",
+              "accent_color": "#A78BFA",
+              "layout": "right"
+            }
+          ]
+        }
+      ]
+    },
+    "testimonials_section": {
+      "background_color": "#FFFFFF",
+      "title": {
+        "text": "Encabezado de sección",
+        "font_size": 24,
+        "font_weight": "bold",
+        "color": "#000000"
+      },
+      "cards": [
+        {
+          "quote": "«Luc, quien me atendió fue fantástico, amable y cortés»",
+          "avatar": {
+            "shape": "circle",
+            "size": 40
+          },
+          "description": "Descripción",
+          "border_radius": 8,
+          "padding": 16,
+          "background_color": "#FFFFFF",
+          "border_color": "#E5E7EB"
+        },
+        {
+          "quote": "«Un comentario fantástico»",
+          "avatar": {
+            "shape": "circle",
+            "size": 40
+          },
+          "description": "Nombre · Descripción",
+          "border_radius": 8,
+          "padding": 16,
+          "background_color": "#FFFFFF",
+          "border_color": "#E5E7EB"
+        },
+        {
+          "quote": "«Una reseña entusiasta»",
+          "avatar": {
+            "shape": "circle",
+            "size": 40
+          },
+          "description": "Nombre · Descripción",
+          "border_radius": 8,
+          "padding": 16,
+          "background_color": "#FFFFFF",
+          "border_color": "#E5E7EB"
+        }
+      ],
+      "cards_layout": "horizontal",
+      "spacing": 16
+    },
+    "cta_section": {
+      "background_color": "#F9FAFB",
+      "title": {
+        "text": "Encabezado de sección",
+        "font_size": 24,
+        "font_weight": "bold",
+        "color": "#000000"
+      },
+      "buttons": [
+        {
+          "label": "Botón",
+          "style": {
+            "background_color": "#000000",
+            "text_color": "#FFFFFF",
+            "padding_horizontal": 24,
+            "padding_vertical": 12,
+            "border_radius": 4
+          }
+        },
+        {
+          "label": "Botón secundario",
+          "style": {
+            "background_color": "#FFFFFF",
+            "text_color": "#000000",
+            "border_color": "#D1D5DB",
+            "padding_horizontal": 24,
+            "padding_vertical": 12,
+            "border_radius": 4
+          }
+        }
+      ],
+      "alignment": "center",
+      "gap": 16
+    },
+    "footer": {
+      "background_color": "#FFFFFF",
+      "columns": [
+        {
+          "title": "ParkingNow",
+          "items": []
+        },
+        {
+          "title": "Contacto",
+          "items": ["+34 684 10 09 30", "Página", "Página"]
+        },
+        {
+          "title": "Tema",
+          "items": ["Página", "Página"]
+        },
+        {
+          "title": "Políticas",
+          "items": ["Privacidad", "Cancelaciones y Devoluciones", "Reservas"]
+        }
+      ],
+      "text_color": "#6B7280",
+      "font_size": 12,
+      "column_gap": 32
+    }
+  },
+  "style": {
+    "font_family": "Inter, sans-serif",
+    "primary_color": "#000000",
+    "secondary_color": "#6B7280",
+    "accent_color": "#A78BFA",
+    "background_color": "#FFFFFF"
+  }
+}
