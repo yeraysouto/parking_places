@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}Plazas de Parking - Inicio{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-parking me-2"></i>
+                Estado de las Plazas
+            </h1>
+            <button class="btn btn-primary" onclick="actualizarPlazas()">
+                <i class="fas fa-sync-alt me-1"></i>
+                Actualizar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Estadísticas -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-check-circle fa-2x mb-2"></i>
+                <h5 class="card-title">{{ plazas|selectattr('estado', 'equalto', 'libre')|list|length }}</h5>
+                <p class="card-text">Plazas Libres</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-times-circle fa-2x mb-2"></i>
+                <h5 class="card-title">{{ plazas|selectattr('estado', 'equalto', 'ocupada')|list|length }}</h5>
+                <p class="card-text">Plazas Ocupadas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-2x mb-2"></i>
+                <h5 class="card-title">{{ plazas|selectattr('estado', 'equalto', 'reservada')|list|length }}</h5>
+                <p class="card-text">Plazas Reservadas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-charging-station fa-2x mb-2"></i>
+                <h5 class="card-title">{{ plazas|selectattr('tipo', 'equalto', 'electrico')|list|length }}</h5>
+                <p class="card-text">Plazas Eléctricas</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Filtros</h6>
+                <div class="row">
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroEstado">
+                            <option value="">Todos los estados</option>
+                            <option value="libre">Libre</option>
+                            <option value="ocupada">Ocupada</option>
+                            <option value="reservada">Reservada</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroTipo">
+                            <option value="">Todos los tipos</option>
+                            <option value="normal">Normal</option>
+                            <option value="discapacitados">Discapacitados</option>
+                            <option value="electrico">Eléctrico</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-outline-secondary" onclick="aplicarFiltros()">
+                            <i class="fas fa-filter me-1"></i>
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-outline-primary" onclick="limpiarFiltros()">
+                            <i class="fas fa-times me-1"></i>
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Grid de Plazas -->
+<div class="row" id="plazasContainer">
+    {% for plaza in plazas %}
+    <div class="col-md-4 col-lg-3 mb-3 plaza-item" 
+         data-estado="{{ plaza.estado }}" 
+         data-tipo="{{ plaza.tipo }}">
+        <div class="card plaza-card h-100 estado-{{ plaza.estado }} tipo-{{ plaza.tipo }}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title mb-0">{{ plaza.numero }}</h5>
+                    <span class="badge bg-{{ 'success' if plaza.estado == 'libre' else 'danger' if plaza.estado == 'ocupada' else 'warning' }}">
+                        {{ plaza.estado|title }}
+                    </span>
+                </div>
+                
+                <div class="mb-2">
+                    <small class="text-muted">
+                        <i class="fas fa-{{ 'car' if plaza.tipo == 'normal' else 'wheelchair' if plaza.tipo == 'discapacitados' else 'bolt' }} me-1"></i>
+                        {{ plaza.tipo|title }}
+                    </small>
+                </div>
+                
+                <div class="btn-group w-100" role="group">
+                    {% if plaza.estado == 'libre' %}
+                    <button class="btn btn-sm btn-outline-danger" onclick="cambiarEstado({{ plaza.id }}, 'ocupada')">
+                        <i class="fas fa-times me-1"></i>Ocupar
+                    </button>
+                    <button class="btn btn-sm btn-outline-warning" onclick="cambiarEstado({{ plaza.id }}, 'reservada')">
+                        <i class="fas fa-clock me-1"></i>Reservar
+                    </button>
+                    {% elif plaza.estado == 'ocupada' %}
+                    <button class="btn btn-sm btn-outline-success" onclick="cambiarEstado({{ plaza.id }}, 'libre')">
+                        <i class="fas fa-check me-1"></i>Liberar
+                    </button>
+                    {% elif plaza.estado == 'reservada' %}
+                    <button class="btn btn-sm btn-outline-success" onclick="cambiarEstado({{ plaza.id }}, 'libre')">
+                        <i class="fas fa-check me-1"></i>Liberar
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Modal para Reservas -->
+<div class="modal fade" id="reservaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reservaForm">
+                    <div class="mb-3">
+                        <label for="matricula" class="form-label">Matrícula</label>
+                        <input type="text" class="form-control" id="matricula" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+                        <input type="datetime-local" class="form-control" id="fechaInicio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaFin" class="form-label">Fecha de Fin</label>
+                        <input type="datetime-local" class="form-control" id="fechaFin" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="crearReserva()">Crear Reserva</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let plazaSeleccionada = null;
+
+function actualizarPlazas() {
+    fetch('/api/plazas')
+        .then(response => response.json())
+        .then(data => {
+            // Recargar la página para mostrar los datos actualizados
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al actualizar las plazas');
+        });
+}
+
+function cambiarEstado(plazaId, nuevoEstado) {
+    fetch(`/api/plazas/${plazaId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            estado: nuevoEstado
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Recargar la página para mostrar los cambios
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al cambiar el estado de la plaza');
+    });
+}
+
+function aplicarFiltros() {
+    const estadoFiltro = document.getElementById('filtroEstado').value;
+    const tipoFiltro = document.getElementById('filtroTipo').value;
+    
+    document.querySelectorAll('.plaza-item').forEach(item => {
+        const estado = item.dataset.estado;
+        const tipo = item.dataset.tipo;
+        
+        const mostrarEstado = !estadoFiltro || estado === estadoFiltro;
+        const mostrarTipo = !tipoFiltro || tipo === tipoFiltro;
+        
+        if (mostrarEstado && mostrarTipo) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtroEstado').value = '';
+    document.getElementById('filtroTipo').value = '';
+    document.querySelectorAll('.plaza-item').forEach(item => {
+        item.style.display = 'block';
+    });
+}
+
+// Configurar fecha mínima para los inputs de fecha
+document.addEventListener('DOMContentLoaded', function() {
+    const now = new Date();
+    const nowString = now.toISOString().slice(0, 16);
+    
+    document.getElementById('fechaInicio').min = nowString;
+    document.getElementById('fechaFin').min = nowString;
+});
+</script>
+{% endblock %} 

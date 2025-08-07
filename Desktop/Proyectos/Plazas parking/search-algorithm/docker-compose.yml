@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: plazas-parking-app
+    ports:
+      - "8000:8000"
+    volumes:
+      # Montar el código fuente para desarrollo
+      - ./src:/app/src
+      # Montar directorio de datos para persistir SQLite
+      - ./data:/app/data
+      # Montar requirements.txt para cambios en dependencias
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SQLITE_DATABASE_URL=sqlite:///data/mi_base_de_datos.db
+      - FLASK_ENV=development
+      - FLASK_APP=src/app.py
+    working_dir: /app
+    command: ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=8000"]
+    restart: unless-stopped
+    networks:
+      - plazas-parking-network
+
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: plazas-parking-dev
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./requirements.txt:/app/requirements.txt
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SQLITE_DATABASE_URL=sqlite:///data/mi_base_de_datos.db
+      - FLASK_ENV=development
+      - FLASK_APP=src/app.py
+      - FLASK_DEBUG=1
+    working_dir: /app
+    command: ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000", "--debug"]
+    profiles:
+      - dev
+    networks:
+      - plazas-parking-network
+
+networks:
+  plazas-parking-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local 
